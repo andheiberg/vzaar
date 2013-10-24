@@ -32,15 +32,11 @@ class VzaarServiceProvider extends ServiceProvider {
 
 		$this->app['vzaar'] = $this->app->share(function($app)
 		{
-<<<<<<< HEAD
-			return new Vzaar(\Config::get('vzaar.token'), \Config::get('vzaar.secret'), \Config::get('vzaar.flashSupport'));
-=======
 			return new Vzaar(
 				$this->app['config']->get('vzaar.token'),
 				$this->app['config']->get('vzaar.secret'),
 				$this->app['config']->get('vzaar.flashSupport')
 			);
->>>>>>> initial commit
 		});
 	}
 

@@ -21,9 +21,6 @@ return array(
 	 *
 	 * @var boolean
 	 */
-<<<<<<< HEAD
-	'flashSupport' = false
-=======
 	'flashSupport' => false
->>>>>>> initial commit
+	
 );
