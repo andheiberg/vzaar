@@ -2,15 +2,14 @@
 
 class XMLToArray
 {
-
-	var $_data = Array();
-	var $_name = Array();
-	var $_rep = Array();
+	var $_data = array();
+	var $_name = array();
+	var $_rep = array();
 	var $_parser = 0;
-	var $_ignore = Array(), $_replace = Array(), $_showAttribs;
+	var $_ignore = array(), $_replace = array(), $_showAttribs;
 	var $_level = 0;
 
-	function __construct($data, $ignore = Array(), $replace = Array(), $showattribs = false, $toupper = false)
+	function __construct($data, $ignore = array(), $replace = array(), $showattribs = false, $toupper = false)
 	{
 		$this->_showAttribs = $showattribs;
 		$this->_parser = xml_parser_create();
@@ -41,7 +40,7 @@ class XMLToArray
 		xml_parser_free($this->_parser);
 	}
 
-	function & getArray()
+	function & getarray()
 	{
 		return $this->_data[0];
 	}
