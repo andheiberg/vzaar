@@ -91,18 +91,24 @@ class Vzaar
 
 		$response = json_decode($c->send());
 		
-		// annoyingly inconsitent API responses on failure
+		// Special exceptions to work around the Vzaar API's inconsistent error responses
 		$api = isset($response->vzaar_api) ? $response->vzaar_api : null;
-		if (is_null($api)) {
+
+		if (is_null($api))
+		{
 			$api = isset($response->{'vzaar-api'}) ? $response->{'vzaar-api'} : null;
 		}
 		
-		if (is_null($api)) {
+		if (is_null($api))
+		{
 			throw new OAuthException("Authentication failed with malformed response");
 		}
-		if (isset($api->error)) {
+
+		if (isset($api->error))
+		{
 			throw new OAuthException("Authentication failed with message {$api->error->type}");
 		}
+
 		return $api->test->login;
 	}
 
