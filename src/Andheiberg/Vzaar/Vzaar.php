@@ -4,6 +4,7 @@ use Andheiberg\Vzaar\Utils\OAuth\Consumer as OAuthConsumer;
 use Andheiberg\Vzaar\Utils\OAuth\Token as OAuthToken;
 use Andheiberg\Vzaar\Utils\OAuth\Request as OAuthRequest;
 use Andheiberg\Vzaar\Utils\OAuth\SignatureMethod_HMAC_SHA1 as OAuthSignatureMethod_HMAC_SHA1;
+use Andheiberg\Vzaar\Utils\OAuth\Exception as OAuthException;
 use Andheiberg\Vzaar\Utils\HttpRequest as HttpRequest;
 use Andheiberg\Vzaar\Utils\XMLToArray;
 
@@ -89,8 +90,20 @@ class Vzaar
 		array_push($c->headers, 'User-Agent: Vzaar OAuth Client');
 
 		$response = json_decode($c->send());
-
-		return $response->vzaar_api->test->login;
+		
+		// annoyingly inconsitent API responses on failure
+		$api = isset($response->vzaar_api) ? $response->vzaar_api : null;
+		if (is_null($api)) {
+			$api = isset($response->{'vzaar-api'}) ? $response->{'vzaar-api'} : null;
+		}
+		
+		if (is_null($api)) {
+			throw new OAuthException("Authentication failed with malformed response");
+		}
+		if (isset($api->error)) {
+			throw new OAuthException("Authentication failed with message {$api->error->type}");
+		}
+		return $api->test->login;
 	}
 
 	/**
