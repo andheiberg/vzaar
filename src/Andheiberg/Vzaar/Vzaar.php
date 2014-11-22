@@ -269,6 +269,7 @@ class Vzaar
 
 	/**
 	 * Get a signed signature as XML
+	 * Redirect Url should not be URL Encoded for sign to work
 	 *
 	 * @param  string $redirectUrl
 	 * @return XML
@@ -279,7 +280,17 @@ class Vzaar
 			'flash_request' => $this->flashSupport ? true : null,
 			'success_action_redirect' => $redirectUrl
 		];
-		$url = $this->apiURL . "api/videos/signature?" . http_build_query($params);
+
+		// remove entries having null/false
+		$params = array_filter($params);
+
+		$urlParams = '';
+		foreach ($params as $key => $value) {
+			$urlParams .= '&'.$key.'='.$value;
+		}
+		$urlParams = ltrim($urlParams, '&');
+
+		$url = $this->apiURL . 'api/videos/signature?' . $urlParams;
 
 		$req = $this->authenticate($url, 'GET');
 
